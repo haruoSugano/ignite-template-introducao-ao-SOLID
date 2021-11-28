@@ -1,0 +1,313 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Introdução SOLID - Documentation",
+        "description": "This is an Introduction SOLID - Documentation",
+        "version": "1.0.0",
+        "contact": {
+            "email": "helioharuots@gmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "createUsers",
+                "summary": "Create a user",
+                "description": "Create a new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "User name sample",
+                                    "email": "User email sample"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "User not created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "message"
+                                        }
+                                    },
+                                    "example": "This email is already exists!"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "User already exists"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "List all users",
+                "description": "Gets all users",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "header",
+                        "description": "ID user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "date"
+                                        },
+                                        "updated_at": {
+                                            "type": "date"
+                                        }
+                                    },
+                                    "example": [
+                                        {
+                                            "admin": false,
+                                            "id": "38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name": "Helio",
+                                            "email": "helio@gmail.com",
+                                            "created_at": "2021-03-20T14:06:10.530Z",
+                                            "updated_at": "2021-03-20T14:06:10.530Z"
+                                        },
+                                        {
+                                            "id": "4520f9f0-113e-43fb-a9b2-6668e88e0b8e",
+                                            "admin": true,
+                                            "name": "Haruo",
+                                            "email": "haruo@gmail.com",
+                                            "created_at": "2021-03-20T15:36:50.203Z",
+                                            "updated_at": "2021-03-20T15:36:50.203Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "This user is not Admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "message"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "This user is not Admin"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get a user by ID",
+                "description": "Only admin user can use",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Success",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "date"
+                                        },
+                                        "updated_at": {
+                                            "type": "date"
+                                        }
+                                    },
+                                    "exemple": {
+                                        "id": "38ab4505-db46-42ab-a95a-a981343a3c94",
+                                        "admin": false,
+                                        "name": "Helio",
+                                        "email": "haruo@gmail.com",
+                                        "created_at": "2021-03-20T14:06:10.530Z",
+                                        "updated_at": "2021-03-20T15:36:50.203Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "User not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "message"
+                                    }
+                                },
+                                "example": {
+                                    "error": "This user is not exists, please verify id of user"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/users/{user_id}/admin": {
+        "patch": {
+            "tags": [
+                "User"
+            ],
+            "summary": "Turn user as admin",
+            "description": "Receive the `user_id` and turn the corresponding user administrator",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "in": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Success",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "admin": {
+                                        "type": "boolean"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "created_at": {
+                                        "type": "date"
+                                    },
+                                    "updated_at": {
+                                        "type": "date"
+                                    }
+                                },
+                                "example": {
+                                    "id": "364dcbeb-4a52-44fd-8320-01649443c4ba",
+                                    "admin": true,
+                                    "name": "Helio",
+                                    "email": "helio@gmail.com",
+                                    "created_at": "2021-03-20T15:56:02.340Z",
+                                    "updated_at": "2021-03-20T15:56:02.340Z"
+                                }
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "User not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "message"
+                                    }
+                                },
+                                "example": {
+                                    "error": "This user is not exists, please verify id of user"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+}
